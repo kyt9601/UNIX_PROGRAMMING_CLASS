@@ -1,0 +1,16 @@
+
+
+
+특정 파일에 대한 읽기/쓰기/실행이 가능한지 확인하
+는 system call
+
+#include <unistd.h>
+int access(const char *pathname, int amode); 
+
+인수 사용법 :
+◦ amode : R_OK , W_OK, X_OK, 또는 F_OK
+◦ return 값 : 0 or -1
+◦ euid가 아니라 uid에 근거하여 process가 file에 접근 가능한
+지를 표현;
+
+

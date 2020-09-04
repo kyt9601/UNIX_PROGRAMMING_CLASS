@@ -1,0 +1,11 @@
+
+
+
+symbolic link가 가리키는 파일이 아닌 symbolic
+link 자체의 파일 정보를 전달
+
+#include <sys/types.h>
+#include<sys/stat.h>
+int lstat (const char *linkname, struct stat *buf); 
+
+

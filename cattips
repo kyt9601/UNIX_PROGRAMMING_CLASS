@@ -1,0 +1,2 @@
+#!/bin/sh
+cat ~/tips/$1

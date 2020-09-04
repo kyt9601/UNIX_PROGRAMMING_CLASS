@@ -1,0 +1,5 @@
+ 사용법 :
+#include <unistd.h>
+int pause(void);
+◦ signal 도착까지 실행을 일시 중단 (CPU 사용 없이);
+◦ signal이 포착되면; 처리 routine 수행 & -1 return; 

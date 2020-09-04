@@ -1,0 +1,34 @@
+
+
+
+호출 프로세스의 주기억장치 공간에 새로운 프로그램을 적재;
+- 호출 프로세스는 no longer exists;
+- 새 process는 처음부터 실행;
+- 새 process는 호출 프로세스의 id로 실행; 
+
+경로를 지정, 인자를 벡터로 전달
+
+인수 :
+ arg0 : 프로그램 이름(경로 이름 빼고); and arg1,...,argn :
+프로그램에 입력으로 사용될 인수들, 마지막엔 null pointer; 
+
+#include <unistd.h>
+int execv(const char *path, char *const argv[]); 
+
+◦ 실패 시 -1 return; 성공 시 return이 없다;
+◦ fork와의 차이점 : 기존 프로세스와 병렬 수행이 아니다. 
+
+#include <unistd.h>
+main() {
+    char *const av[] = {
+            "a.out”,
+            “3”,
+            (char * ) 0
+        };
+    printf(“executing a.out\ n”);
+    execv(“./a.out”, av);
+    printf(“execv failed to run a.out”);
+    exit(1);
+}
+
+

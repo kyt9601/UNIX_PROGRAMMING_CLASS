@@ -1,0 +1,18 @@
+
+
+
+지정된 저장장소에서 지정한 byte수 만큼의 data를
+읽어 open된 file에 쓰는 명령
+◦ file pointer or read-write pointer: 쓰여질 다음 byte의
+위치를 나타냄;
+
+#include <unistd.h>
+
+ssize_t write(int filedes, const void *buffer, size_t nbytes);
+
+return 값 : 쓰여진 byte 수 or -1;
+ 보통은 return값 = n;
+ return 값 < n이면, 쓰는 도중 media가 full;
+ 만약, 쓰기 전에 꽉 차면; -1 return;
+
+

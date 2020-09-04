@@ -1,0 +1,97 @@
+ ipcs 
+$ipcrm -m shmid or -q msqid or -s semid
+
+
+struct mymsg{
+long mtype; // message type (양의 정수)
+char mtext[SOMEVALUE]; // message 내용
+};
+
+
+#include <sys/msg.h>
+int msgget(key_t key, int permflags);
+◦ key : message queue의 key 값
+◦ permflags = queue에 대한 access permission
+ | IPC_CREAT :
+ 해당 queue가 없으면, 생성한 후 return; 있으면, return
+ 이 flag가 설정 되지 않은 경우에는, queue가 존재하는 경우에
+만 return
+ | IPC_EXCL :
+ 해당 queue가 존재하지 않는 경우만 성공, 아니면 –1 return
+
+
+#include <sys/msg.h>
+int msgsnd(int mqid, const void *message, size_t size,
+int flags);
+◦ mqid : message queue identifier
+◦ message 의 주소 : 보낼 message가 저장된 주소
+◦ size : message의 크기
+◦ flags = IPC_NOWAIT
+ send가 불가능하면 즉시 return (queue가 가득 찬 경우)
+ flag가 설정 되지 않으면 (0이면), 성공 시까지 blocking
+◦ return 값은 0 or –1
+
+
+#include <sys/msg.h>
+int msgrcv(int mqid, void *message, size_t size, long
+msg_type, int flags);
+◦ mqid : message queue identifier
+◦ message 주소 : 받은 message를 저장할 저장 장소의 주소
+◦ size : 준비 된 저장 장소의 크기
+◦ msg_type =
+ 0 : queue의 첫 message
+ > 0 : 해당 값을 갖는 첫 message
+ < 0 : mtyep값이 절대값 보다 작거나 같은 것 중 최소값을 갖는 첫
+message
+
+
+flags = IPC_NOWAIT
+ receive가 불가능하면 즉시 return (queue에 해당 msg가 없는 경
+우)
+ return 값은 –1; errno = EAGAIN
+ flag가 설정 되지 않으면 (값이 0이면), 성공 시까지 blocking
+◦ flags = MSGNOERROR
+ message가 size보다 길면 초과분을 자른다.
+ flag가 설정 되지 않으면 size 초과 시 error
+◦ return 값 :
+ receive 성공 시 : 받은 message의 길이
+ 실패 시 : -1
+ access permission 때문에 실패한 경우 errorno=EACCESS
+
+
+struct q_entry{
+long mtype;
+int mnum;
+};
+struct q_entry msg;
+qid=msgget(0111, 0600|IPC_CREAT);
+while(msgrcv(qid, &msg, sizeof(int), 1, 0)>0){
+msg.mtype=2;
+msg.mnum=msg.mnum+8;
+msgsnd(qid, &msg, sizeof(int), 0);
+}
+
+
+
+msqid_ds 구조:
+◦ struct ipc_perm msg_perm; //소유권
+◦ msgqnum_t msg_qnum; // msg 수
+◦ msglen_t msg_qbytes; // bytes 수
+◦ pid_t msg_lspid; // last sender
+◦ pid_t msg_lrpid; // last receiver
+◦ time_t msg_stime; // last sending time
+◦ time_t msg_rtime; // last receipt time
+◦ time_t msg_ctime; // last s/r time
+
+
+
+
+#include <sys/msg.h>
+int msgctl(int mqid, int command, struct msqid_ds
+*msq_stat);
+◦ mqid : message queue identifier
+◦ command =
+ IPC_STAT : msg queue의 상태 정보 확인
+ IPC_RMID : msg_queue 삭제
+
+

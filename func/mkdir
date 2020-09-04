@@ -1,0 +1,10 @@
+
+
+
+directory 생성: directory file에 .과 ..을 넣어서 생성;
+
+#include <sys/types.h>
+#include <sys/stat.h>
+int mkdir(const char *pathname, mode_t mode); 
+
+

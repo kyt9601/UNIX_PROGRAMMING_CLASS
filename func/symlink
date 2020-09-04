@@ -1,0 +1,16 @@
+
+
+
+symbol형 link ;
+◦ link의 제한점 :
+ directory에 대한 link 생성은 불가;
+ 다른 file system에 있는 file에 대해서는 link 생성 불가;
+  symbolic link (자체가 file; 그 안에 다른 file에 대한 경로 수
+록; )
+
+#include <unistd.h>
+int symlink (const char *realname, const char *symname);
+
+return 값 : 0 or -1 (symname이 이미 존재 하면) 
+
+

@@ -1,0 +1,43 @@
+
+
+
+하나 이상의 child process 수행 시 아무나 하나가 종료되면 return 된다; 
+Blocked 방식
+
+#include <sys/wait.h>
+#include <sys/types.h>
+pid_t wait (int *status); 
+
+◦ return 값 : 종료된 child의 id or –1 (살아있는 child process가 없는 경우)
+◦ status : child의 종료 상태가 전달; 
+
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlib.h>
+main() {
+    pid_t pid;
+    int status, exit_status;
+    if ((pid = fork()) < 0) {
+        perror(“fork failed”);
+        exit(1);
+    }
+    if (pid == 0) {
+        sleep(4);
+        exit(5);
+    }
+    if ((pid = wait( & status)) == -1) {
+        perror(“wait failed”);
+        exit(2);
+    }
+    if (WIFEXITED(status)) {
+        exit_status = WEXITSTATUS(status);
+        printf(“Exit status from % d was % d\ n”, pid, exit_status);
+    }
+    exit(0);
+}
+
+매크로 함수
+WIFEXITED(status) : status의 하위 8bit가 0인지 검사; 정상종료인지 검사;
+WEXITSTATUS(ststus) : status의 상위 비트에 저장된 값을 return; 
+
+

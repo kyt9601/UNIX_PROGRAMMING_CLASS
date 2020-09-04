@@ -1,0 +1,18 @@
+
+
+
+0764 = S_IRUSR | S_IWUSR | S_IXUSR |
+ S_IRGRP | S_IWGRP | S_IROTH 
+
+if (s.st_mode&S_IRUSR)
+  printf(“소유자 읽기 권한 설정!!!”);
+
+if (S_ISREG(s.st_mode))
+  printf(“일반 파일!!!”);
+
+04000 S_ISUID : 실행이 시작되면, 소유자의 uid
+ 가 euid가 된다.
+02000 S_ISGID : 실행이 시작되면, 소유자의 gid
+ 가 egid가 된다.
+
+

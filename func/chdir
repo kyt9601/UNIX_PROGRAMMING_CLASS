@@ -1,0 +1,16 @@
+
+
+
+현재 디렉토리 변경
+
+#include <unistd.h>
+int chdir(const char *path); 
+
+예:
+  fd1=open(“/usr/ben/abc”, O_RDONLY);
+  fd2=open(“/usr/ben/xyz”, O_RDWR);
+chdir(“/usr/ben”);
+  fd1=open(“abc”, O_RDONLY);
+  fd2=open(“xyz”, O_RDWR);
+
+

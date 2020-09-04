@@ -1,0 +1,9 @@
+
+
+
+directory 닫기
+
+#include <dirent.h>
+int closedir(DIR *dirptr); 
+
+

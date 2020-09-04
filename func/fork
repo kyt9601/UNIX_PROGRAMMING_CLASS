@@ -1,0 +1,69 @@
+
+
+
+수행되던 process(parent)의 복사본 process(child) 생성
+
+#include <sys/types.h>
+#include <unistd.h>
+pid_t fork(void);
+
+fork() 바로 다음 문장부터 동시에 실행
+
+두 process의 차이점 :
+ pid와 ppid가 다르다
+ fork()의 return 값이 다르다.
+ parent process의 return 값은 child process의 process id;
+ child process의 return 값은 0이다;
+
+fork 실패 시 -1 return;
+ 실패 원인 :
+ 시스템 전체 process의 수 제한;
+ 한 process가 생성할 수 있는 process 수 제한;
+
+int main(void) {
+    pid_t pid;
+    printf(“Calling fork…\ n”);
+    pid = fork();
+    if (pid == 0) {
+        printf(“I am the child\ n”);
+    } else if (pid > 0) {
+        printf(“I am the parent, child has pid % d\ n”, pid);
+    } else
+        printf(“Fork returned error code\ n”);
+    return 0;
+}
+
+child process는 parent process의 복제;
+◦ 모든 변수 값이 그대로 복제 된다.
+◦ fork()후에 변경된 값은 복제되지 않는다;
+◦ file descriptor도 복제 된다.
+ parent process가 open한 file은 child process에게도
+open;
+◦ parent와 child가 file을 공통으로 사용 가능; 
+
+#include <unistd.h>
+#include <fcntl.h>
+main(void) {
+    int fd;
+    pid_t pid;
+    char buf[10];
+    fd = open(“data”, O_RDONLY);
+    read(fd, buf, 10);
+    printf(“before fork: % ld\ n”, lseek(fd, (off_t) 0, SEEK_CUR));
+    switch (pid = fork()) {
+    case– 1:
+        perror(“fork failed\ n”);
+        exit(1);
+        break;
+    case 0:
+        printf(“child before read: % ld\ n”, lseek(fd, (off_t) 0, SEEK_CUR));
+        read(fd, buf, 10);
+        printf(“child after read: % ld\ n”, lseek(fd, (off_t) 0, SEEK_CUR));
+        break;
+    default:
+        wait((int * ) 0);
+        printf(“parent after wait: % ld\ n”, lseek(fd, (off_t) 0, SEEK_CUR));
+    }
+}
+
+

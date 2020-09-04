@@ -1,0 +1,13 @@
+
+
+
+directory 열기
+
+#include <sys/types.h>
+#include <dirent.h>
+DIR *opendir(const char *dirname);
+
+DIR형의 data structure에 대한 pointer를 return; 실
+패 시 null pointer return; 
+
+

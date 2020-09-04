@@ -1,0 +1,45 @@
+signal() 시그널을 받았을 때 종료되지 않고 무시하거나 특정 함수가 실행될 수 있도록 함
+
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+main()
+{
+    /* SIGINT 시그널 받으면 무시하도록 설정 ctrl + \(sigquit) 시그널을 보내 강제종료가능*/
+    signal(SIGINT, SIG_IGN);
+    while (1) {
+       printf("Hello World\n");
+       sleep(1);   /* 1초 동안 정지 */
+    }
+}
+
+
+------------------------------------------------------------------------------------------------------
+
+
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+void signalHandler(int signo);
+
+main()
+{
+    /* SIGINT 시그널 받으면 signalHandler 실행하도록 설정 */
+    signal(SIGINT, signalHandler);
+    while(1) {
+       printf("Hello World\n");
+       sleep(1);
+    }
+}
+
+void signalHandler(int signo)
+{
+    printf("Hi! signal %d\n", signo);  /* signo는 시그널 번호 */
+    /* SIGINT 시그널 받으면 시스템에서 기본적으로 설정한 동작을 하도록 설정 */
+    signal(SIGINT, SIG_DFL);
+}
+
+
+출처: http://molrayo.tistory.com/entry/Signal-signal에-관한-예제?category=431558 [프로그램]

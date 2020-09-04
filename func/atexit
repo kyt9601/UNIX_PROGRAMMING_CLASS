@@ -1,0 +1,14 @@
+
+
+
+process 정지-> open된 file 닫기-> clean-upaction
+
+#include <stdlib.h>
+int atexit(void (*func) (void)); 
+
+지정된 순서의 역순으로 실행;
+
+status의 값은 프로세스 종료 후,
+$ echo $?
+
+

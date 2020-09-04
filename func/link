@@ -1,0 +1,17 @@
+
+
+
+기존 파일에 새로운 이름을 부여하는 system call
+◦ 한 파일에 하나 이상의 이름 : 각 이름을 "hard link" 라 부름
+◦ link count : link의 수
+
+#include <unistd.h>
+int link (const char *orginal_path, const char *new_path); 
+
+return값 : 0 or -1 (new_path가 이미 존재하면.) 
+
+unlink의 재검토 : unlink("a.out");
+◦ 실은 link를 제거  link_count--
+◦ 만약, link_count가 0이 되면 실제로 제거 (free block으로);
+
+

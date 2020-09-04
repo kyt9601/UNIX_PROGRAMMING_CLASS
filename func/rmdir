@@ -1,0 +1,9 @@
+
+
+
+directory 제거: directory가 비어 있을 경우에만 성공; 
+
+#include <unistd.h>
+int rmdir(const char *pathname); 
+
+

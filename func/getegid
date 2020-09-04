@@ -1,0 +1,10 @@
+
+
+
+guid 검색
+
+#include<sys/types.h>
+#include<unistd.h>
+gid_t getegid(void);
+
+

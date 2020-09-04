@@ -1,0 +1,15 @@
+
+
+
+session id를 획득
+
+session :
+◦ 한 session은 한 단말기를 사용하는 foreground
+process group과 background process group의 집합체이다.
+◦ 각 process group은 하나의 session에 속한다.
+
+#include <sys/types.h>
+#include <unistd.h>
+pid_t getsid(pid_t pid);
+
+

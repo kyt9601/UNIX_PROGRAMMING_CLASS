@@ -1,0 +1,12 @@
+
+
+
+process 정지-> open된 file 닫기
+
+#include <stdlib.h>
+void exit(int status); 
+
+status의 값은 프로세스 종료 후,
+$ echo $?
+
+

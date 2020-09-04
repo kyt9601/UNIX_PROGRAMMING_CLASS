@@ -1,0 +1,82 @@
+ sigaction 지정 : signal 수신 시 원하는 행동을 취할 수 있도록 한다.
+  ◦ 예외) SIGSTOP(process의 일시 중단), SIGKILL(process
+    의 종료)의 경우는 별도의 action을 취할 수 없다.
+ 지정 방법:
+  #include <signal.h>
+  int sigaction(int signo, const struct sigaction *act,
+  struct sigaction *oact); 
+
+struct sigaction {
+	void (*sa_handler) (int);
+	sigset_t sa_mask;
+	int sa_flags;
+	void (*sa_sigaction) (int, siginfo_t *, void *);
+};
+
+void (*sa_handler) (int);
+◦ signo를 수신하면 취할 행동 지정;
+ SIG_DFL (default 행동, 즉 종료 선택);
+ SIG_IGN (무시);
+ 정의된 함수 (signal을 받으면 함수로 제어 이동; 함수 실행
+후, signal을 받기 직전의 처리 문장으로 return); 
+
+sigset_t sa_mask;
+◦ 여기 정의된 signal들은, sa_handler에 의해 지정된 함수
+가 수행되는 동안 blocking된다. 함수 수행후 일괄적으로 시그널 발생.
+
+int sa_flags;
+◦ SA_RESETHAND : handler로부터 복귀 시 signal action
+을 SIG_DFL로 재설정;
+◦ SA_SIGINFO : sa_handler 대신 sa_sigaction 사용
+
+int main(void){
+static struct sigaction act;
+act.sa_flags=SA_SIGINFO;
+act.sa_sigaction=handler;
+sigaction(SIGUSR1, &act, NULL);
+…
+}
+void handler(int signo, siginfo_t *sf, ucontext_t *uc){
+psiginfo(sf, “…:”);
+printf(“%d\n”, sf->si_code); <page 313, 표7-8 참조>
+}
+
+ 이전의 설정 복원하기 :
+sigaction(SIGTERM, NULL, &oact); /* 과거 설정 저장 */
+act.sa_handler=SIG_IGN;
+sigaction(SIGTERM, &act, NULL);
+// do anything;
+sigaction(SIGTERM, &oact, NULL); 
+
+#include <stdio.h>
+#include <signal.h>
+#include <sys/types.h>
+int main() {
+        static struct sigaction act;
+        void catchint(int);
+        act.sa_handler = catchint;
+        sigaction(SIGINT, & act, NULL);
+        printf(“sleep call1\ n”);
+        sleep(1);
+        printf(“sleep call2\ n”);
+        sleep(1);
+        printf(“exiting\ n”);
+        exit(0);
+    }
+void catchint(int signo) {
+    printf(“\n CATCHINT: signo = % d\ n”, signo);
+}
+
+ SIGINT를 무시 :
+act.sa_handler=SIG_IGN;
+sigaction(SIGINT, &act, NULL);
+ SIGINT시 종료:
+act.sa_handler=SIG_DFL;
+sigaction(SIGINT, &act, NULL); 
+
+ 여러개의 signal을 무시하려면:
+act.sa_handler=SIG_IGN;
+sigaction(SIGINT, &act, NULL);
+sigaction(SIGQUIT, &act, NULL):
+ 한 process에서 무시되는 signal은 exec()후에도
+계속 무시된다. 

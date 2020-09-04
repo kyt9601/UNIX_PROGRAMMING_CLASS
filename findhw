@@ -1,0 +1,2 @@
+#!/bin/sh
+cat ~/HW*/*.c | grep -C $1 -i $2

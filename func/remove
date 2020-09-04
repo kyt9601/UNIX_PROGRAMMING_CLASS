@@ -1,0 +1,11 @@
+
+
+
+file과 빈 directory도 삭제
+
+#include <stdio.h>
+int remove(const char *filename)
+
+성공시 0; 실패 시 -1 return;
+
+

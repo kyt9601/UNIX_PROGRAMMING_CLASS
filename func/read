@@ -1,0 +1,17 @@
+
+
+
+open된 file로부터 지정한 byte수 만큼의 data를 읽
+어 지정된 저장장소에 저장하는 명령
+◦ file pointer or read-write pointer : 읽혀질 다음 byte의
+위치를 나타냄;
+
+#include <unistd.h>
+
+ssize_t read(int filedes, void *buffer, size_t nbytes);
+
+return 값 : 성공 시, 실제 읽힌 byte 수; 실패 시, -1;
+ return 값 < nbytes이면, file에 남은 data가 nbytes보다 적을 때;
+ 그 다음은 더 이상 읽을게 없으면; return 값은 0;
+
+

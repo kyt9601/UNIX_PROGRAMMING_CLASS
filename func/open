@@ -1,0 +1,26 @@
+
+
+
+기존의 file을 open 하거나, 새롭게 file을 생성하
+여 open하는 system call
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int open(const char *filename, int oflag, [mode_t mode]);
+
+oflag : file을 access하는 방식
+O_RDONLY 또는 O_WRONLY 또는 O_RDWR
+그리고, file을 create하는 방식
+O_CREAT 그리고 O_EXCL 또는 O_TRUNC
+그리고,
+O_APPEND
+
+mode : file을 새로 생성할때만 사용
+0600 또는 0664 또는 0644 또는 ……….
+
+return 값 : 실행 성공 시 file descriptor (음이 아닌 정수);
+실행 실패 시 -1;
+
+

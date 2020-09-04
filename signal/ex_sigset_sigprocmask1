@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+#include <stdlib.h>
+
+void siguser_handler(int signo)
+
+int main(int argc, char *argv[])
+{
+	struct sigaction act_new;
+	act_new.sa_handler = siguser_handler;
+	sigfillset(&act_new.sa_mask);
+	//sigaddset
+	sigdelset(&act_new.sa_mask, SIGUSR1);
+	sigprocmask(SIG_SETMASK,&act_new.sa_mask,NULL);
+	sigaction(SIGUSR1,&act_new,NULL);
+	while(1)
+	{
+		sleep(1);
+	}
+	return 0;
+}
+
+void siguser_handler(int signo)
+{
+	return 0;
+}
+
+
+출처: http://unabated.tistory.com/entry/signal-set-관련-함수-sigemptyset-sigaddset-sigdelset-sigprocmask?category=269885 [랄라라]

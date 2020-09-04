@@ -1,0 +1,10 @@
+
+
+
+group id 검색 시스템 호출
+
+#include <sys/types.h>
+#include <unistd.h>
+pid_t getpgrp(void);
+
+

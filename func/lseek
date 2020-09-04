@@ -1,0 +1,22 @@
+
+
+
+open된 file내의 특정 위치로 file pointer를 이동
+시키는 system call
+
+#include <sys/types.h>
+#include <unistd.h>
+off_t lseek(int filedes, off_t offset, int whence);
+
+whence : whence에서 offset 만큼 떨어진 위치로 이동
+ whence 위치는 아래 위치 중 선택:
+SEEK_SET : file 시작 지점
+SEEK_CUR : 현재 file 위치
+SEEK_END : file의 끝 지점
+
+◦ offset : whence에서 offset 만큼 떨어진 위치로 이동; +/- 로
+방향 설정 가능;
+
+◦ return 값 : 이동된 위치 (시작점부터의 위치); 이동 실패 시 -1;
+
+

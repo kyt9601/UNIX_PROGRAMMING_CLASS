@@ -1,0 +1,14 @@
+
+
+
+current working directory의 경로 이름
+
+#include <unistd.h>
+char *getcwd(char *name, size_t size); 
+
+◦ return 값 : current working directory의 경로 이름
+◦ size는 실제 길이 보다 +1이 커야 한다.
+◦ 성공 시 directory의 경로 이름이 name에 copy; 실패 시
+null pointer return; 
+
+

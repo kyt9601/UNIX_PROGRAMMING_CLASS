@@ -1,0 +1,106 @@
+raise() 자신에게 시그널을 보내는 함수이다.
+alarm() seconds 후에 자신에게 SIGALRM 시그널을 보내는 함수이다.
+fork() 된 자식은 PID 가 다르기 때문에 exec() 과 달리 작동하지 않는다.
+
+
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+main() 
+{ 
+    int count=0;
+
+    while(1) {
+       printf("Hello World\n");
+       count++;
+       if(count == 3) {   /* count가 3이 되면 */
+          /* 자기 자신에게 SIGINT 시그널 보냄 */
+          raise(SIGINT);
+       }
+       sleep(2);   /* 2초 동안 정지 */
+    }
+}
+
+---------------------------------------------------------------------------------------------------
+
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+void alarmHandler(int signo);
+
+main() 
+{ 
+    int status; 
+    struct sigaction act;
+
+    /* 시그널에 대해 alarmHandler가 실행되도록 설정 */
+    act.sa_handler = alarmHandler;
+    sigemptyset(&act.sa_mask);
+    act.sa_flags = 0;
+    /* SIGALRM에 대해 act 행동을 하도록 설정 */
+    sigaction(SIGALRM, &act, NULL);
+    /* 3초 후에 SIGALRM 시그널을 자신에게 보냄 */
+    alarm(3);
+    while(1)   /* 무한 반복 */
+       ;
+}
+
+void alarmHandler(int signo)
+{
+    printf("Hi! signal %d\n", signo);
+    exit(0);
+}
+
+--------------------------------------------------------------------------------------------------------
+alarm(0)으로 설정하면 이전에 설정된 sigalrm 시그널 요청은 취소된다.
+
+alarm(10)호출후 10초 이내에 alarm(0)을 호출하면 마지막까지 실행하고 종료하지만 10초 이내 alarm(0)를
+
+실행하지 못하면 sigalrm 시그널을 받아 종료한다
+
+#include <stdio.h>
+#include <unistd.h>
+#define MAX 100
+
+main() 
+{ 
+    char buffer[MAX];
+    int n;
+
+    alarm(10);   /* 10초 후에 SIGALRM 시그널을 자신에게 보냄 */
+    n=read(0, buffer, MAX);
+    /* SIGALRM 시그널을 받기 전에 실행하면 SIGALRM 시그널 요청은 취소 */
+    alarm(0);
+    write(1, buffer, n);
+    exit(0);
+}
+
+-------------------------------------------------------------------------------------------------------
+
+status가 'e'라는 것은 sigalrm 시그널을 받아 비정상적으로 종료되었음을 의미한다.
+
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h> 
+
+main() 
+{ 
+    int status; 
+
+    /* 부모 프로세스는 */
+    if (fork()) { 
+       /* 자식 프로세스가 종료되기를 기다림 */
+       wait(&status); 
+       printf("child process terminated with code %x\n", status); 
+    /* 자식 프로세스는 */
+    } else { 
+       /* 3초 후에 SIGALRM 시그널을 자신에게 보냄 */
+       alarm(3); 
+       printf("looping forever...\n"); 
+       while(1) 
+          ; 
+    } 
+}

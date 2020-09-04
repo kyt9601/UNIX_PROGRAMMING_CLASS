@@ -1,0 +1,59 @@
+
+
+
+signal 보내기
+
+#include <signal.h>
+#include <sys/types.h>
+int kill(pid_t pid, int sig);
+
+◦ pid : signal을 받게될 process 지정;
+◦ sig : 보낼 signal 지정;
+
+ signal을 받을 process 또는 process group 지정
+  ◦ pid>0 : 해당 id의 process에게 signal 전달
+  ◦ pid=0 : sender와 같은 process group에 속하는 모든 process
+    에게 signal 전달. sender 자신 포함;
+  ◦ pid=-1: uid가 sender의 euid와 같은 모든 process에게 signal
+    전달. sender 자신 포함;
+  ◦ pid < 0 & pid != -1 : process의 group id가 pid의 절대값과 같
+    은 모든 process에게 signal 전달
+ 다른 사용자의 process에게 signal을 보내면 -1 return;
+
+struct sigaction {
+	void (*sa_handler) (int);
+	sigset_t sa_mask;
+	int sa_flags;
+	void (*sa_sigaction) (int, siginfo_t *, void *);
+};
+
+#include <sys/wait.h>
+#include <unistd.h>
+#include <stdlib.h>
+main() {
+    pid_t pid;
+    int status, exit_status;
+    if ((pid = fork()) < 0) {
+        perror(“fork failed”);
+        exit(1);
+    }
+    if (pid == 0) {
+        sleep(4);
+        exit(5);
+    }
+    if ((pid = wait( & status)) == -1) {
+        perror(“wait failed”);
+        exit(2);
+    }
+    if (WIFEXITED(status)) {
+        exit_status = WEXITSTATUS(status);
+        printf(“Exit status from % d was % d\ n”, pid, exit_status);
+    }
+    exit(0);
+}
+
+매크로 함수
+WIFEXITED(status) : status의 하위 8bit가 0인지 검사; 정상종료인지 검사;
+WEXITSTATUS(ststus) : status의 상위 비트에 저장된 값을 return; 
+
+

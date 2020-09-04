@@ -1,0 +1,9 @@
+
+
+
+가장 최근 시스템 콜 에러를 출력
+
+perror("error … ");
+	error … : No such file or directory
+
+

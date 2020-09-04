@@ -1,0 +1,16 @@
+
+
+
+directory 읽기
+
+#include <sys/types.h>
+#include <dirent.h>
+struct dirent *readdir (DIR *dirptr); 
+
+return 값: dirptr이 가리키는 DIR 구조내의 한 항;
+◦ struct dirent : ino_t d_ino;
+	char d_name[];
+◦ pointer dirptr은 read 후 다음 항을 가리킨다.
+◦ directory의 끝에 도달하면 null pointer를 return;
+
+

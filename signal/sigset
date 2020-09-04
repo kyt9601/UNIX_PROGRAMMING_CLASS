@@ -1,0 +1,19 @@
+ signal 집합 지정 :
+◦ sigemptyset  sigaddset, 또는
+◦ sigfillset  sigdelset
+ 사용 방법 :
+#include <signal.h>
+int sigemptyset(sigset_t *set);
+int sigfillset(sigset_t *set);
+int sigaddset(sigset_t *set, int signo);
+int sigdelset(sigset *set, int signo);
+int sigismember(sigset_t *set, int signo);
+
+ 예:
+sigset_t mask1, mask2;
+sigemptyset(&mask1);
+sigaddset(&mask1, SIGINT);
+sigaddset(&mask1, SIGQUIT);
+sigfillset(&mask2);
+sigdelset(&mask2, SIGCHLD); 
+

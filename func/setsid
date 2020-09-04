@@ -1,0 +1,21 @@
+
+
+
+session id를 설정
+
+session :
+◦ 한 session은 한 단말기를 사용하는 foreground
+process group과 background process group의 집합체이다.
+◦ 각 process group은 하나의 session에 속한다.
+
+◦ 제어 단말기를 갖지 않는 새로운 session과 group 생성;
+◦ 호출 프로세스의 id가 session과 group의 id가 된다.
+◦ 만약, 호출 process가 현재 group의 leader 이면 –1을
+return; 
+◦ 종료가 불가능
+
+#include <sys/types.h>
+#include <unistd.h>
+pid_t setsid(void);
+
+

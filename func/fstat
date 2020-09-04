@@ -1,0 +1,23 @@
+
+
+
+open된 file에 대한 정보를 획득; 
+
+#include<fcntl.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+int fstat (int filedes, struct stat *buf); 
+
+buf 에 채워진 내용은 ?
+◦ st_dev, st_ino : identifier (논리적 장치번호와 inode 번호)
+◦ st_mode : permission mode
+◦ st_nlink : link의 수
+◦ st_uid, st_gid : user의 uid와 gid
+◦ st_rdev : file이 장치인 경우만 사용
+◦ st_size : 논리적 크기
+◦ st_atime, st_mtime, st_ctime : file의 최근 access time,
+update time, stat 구조의 update time
+◦ st_blksize : I/O block 크기
+◦ st_blocks : 파일에 할당된 block의 수
+
+

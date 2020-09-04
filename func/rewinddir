@@ -1,0 +1,10 @@
+
+
+
+directory file pointer 초기화
+
+#include <sys/types.h>
+#include <dirent.h>
+void rewinddir(DIR *dirptr); 
+
+

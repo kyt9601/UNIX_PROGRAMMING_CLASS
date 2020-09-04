@@ -1,0 +1,16 @@
+
+
+
+pid 가 종료되면 종료되면 return 된다; 
+Blocked 방식 (WNOHANG 을 이용시 Non-Blocked)
+
+#include <sys/types.h>
+#include <sys/wait.h>
+pid_t waitpid(pid_t pid, int *status, int options); 
+
+◦ pid : 기다리고 싶은 child의 id;
+◦ status : child의 종료 상태가 전달; 
+◦ return 값 : 종료된 child의 id or –1 (해당 child process가 없는 경우)
+◦ options : WNOHANG; child가 종료하지 않았으면 0을 return;
+
+

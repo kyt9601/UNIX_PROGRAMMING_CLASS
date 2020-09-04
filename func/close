@@ -1,0 +1,15 @@
+
+
+
+open 된 file을 close 할때 사용
+◦ process 종료 시 open된 file들은 자동으로 close.
+◦ 그러나, 동시에 open할 수 있는 file 수 제한 때문에 close 사
+용;
+
+#include <unistd.h>
+
+int close(int filedes);
+
+return 값 : 성공 시 0; 실패 시 -1;
+
+

@@ -1,0 +1,17 @@
+
+
+
+file을 생성하여 open하거나, 기존 file을 open하는
+system call
+
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+int creat(const char *filename, mode_t mode);
+
+file을 쓰기 가능한 상태로 open;
+file이 이미 존재하면: 두 번째 인자는 무시; 기존 file은 0으로
+open!
+
+

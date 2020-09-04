@@ -1,0 +1,11 @@
+
+
+
+file만 삭제하는 명령
+
+#include <unistd.h>
+int unlink(const char *filename);
+
+성공시 0; 실패 시 -1 return;
+
+

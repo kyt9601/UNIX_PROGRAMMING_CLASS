@@ -1,0 +1,12 @@
+
+
+
+file과 directory 둘 다 rename 가능; 
+
+#include <stdio.h>
+int rename (const char *oldpathname, const char *newpathname); 
+
+newpathname이 존재해도 -1이 아님. 기존 file을 제거
+하고 새 이름 부여; 
+
+

@@ -1,0 +1,43 @@
+pause() 시그널이 도착할 때 까지 실행을 중단시킴
+
+부모 프로세스는 sigint 시그널에 대해 signalHandler가 실행되도록 설정하고 pause()에 의해 실행을 중단한다.
+
+그때 자식 프로세스는 5초동안 가만히 있다가 kill에 의해 부모 프로세스에 sigint 시그널을 보내고 종료한다.
+
+sigint 시그널을 받은 부모 프로세스는 pause에서 깨어나 signalHandler를 실행시키고 종료한다.
+
+#include <sys/types.h>
+#include <signal.h>
+#include <unistd.h>
+
+static int signal_flag = 0; 
+void signalHandler(int signo); 
+
+main() 
+{ 
+    struct sigaction act;
+
+    /* 부모 프로세스는 */
+    if (fork()) { 
+       printf("parent process\n"); 
+       act.sa_handler = signalHandler;
+       sigemptyset(&act.sa_mask);
+       act.sa_flags = 0;
+       /* SIGINT에 대해 act 행동을 하도록 설정 */
+       sigaction(SIGINT, &act, NULL);
+       /* 시그널이 도착할 때까지 실행을 중단 */
+       pause(); 
+       if (signal_flag) 
+          printf("signal fired\n"); 
+       exit(0); 
+    /* 자식 프로세스는 */
+    } else { 
+       sleep(5);
+       /* 부모 프로세스에 SIGINT 시그널 보냄 */
+       kill(getppid(), SIGINT);   /* getppid는 부모 프로세스의 프로세스 ID를 반환 */
+       exit(0); 
+    } 
+}
+
+
+출처: http://molrayo.tistory.com/entry/Signal-pause-함수-예제?category=431558 [프로그램]

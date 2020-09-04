@@ -1,0 +1,10 @@
+
+
+
+symname 안에 있는 내용을 보고 싶으면. 
+
+#include <unistd.h>
+int readlink (const char *sympath, char *buffer,
+size_t buffsize); 
+
+
